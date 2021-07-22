@@ -1,0 +1,22 @@
+{% load static %}
+{% block main_content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css' %}" >
+  
+    
+ <div class="sidebar">
+      <center>
+         {% if data.profile_pic %}
+                <img src="/media/{{data.profile_pic}}" style="height:150px;width:150px;border-radius:50%">
+                {% else %}
+                <img src="{% static 'img/2.jpg' %}" style="height:150px;width:150px;border-radius:50%">
+                {% endif %}
+        <h4>Dashbard</h4>
+      </center>
+      <a href="/staff_home"><span>Home</span></a>
+      <a href="/staff_take_attendance"><span>Staff Take Attendance</span></a>
+
+    </div>
+  </aside>
+
+{% endblock main_content %}
