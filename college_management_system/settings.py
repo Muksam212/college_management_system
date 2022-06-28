@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import os
 
 from pathlib import Path
 
@@ -27,24 +28,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-import os
-MEDIA_URL="/media/"
-MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 
-
-STATIC_URL='/static/'
-STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 
 # Application definition
 
 INSTALLED_APPS = [
-    'college_management_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #installed app
+    'college_management_app',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -113,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kathmandu'
 
 USE_I18N = True
 
@@ -122,8 +120,15 @@ USE_L10N = True
 USE_TZ = True
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
 AUTH_USER_MODEL='college_management_app.CustomUser'
