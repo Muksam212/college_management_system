@@ -1,10 +1,5 @@
 from django.contrib import admin
+from .models import *
 
 # Register your models here.
-from django.contrib.auth.admin import UserAdmin
-from college_management_app.models import CustomUser
-
-class UserModel(UserAdmin):
-    pass
-
-admin.site.register(CustomUser, UserModel)
+admin.site.register([Admin,Parent,Course,Department,Staff,Classes,Student,Teacher])

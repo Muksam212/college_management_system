@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'college_management_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(os.path.join(BASE_DIR,'db.sqlite3'))
     }
 }
 
@@ -130,5 +130,3 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-AUTH_USER_MODEL='college_management_app.CustomUser'
