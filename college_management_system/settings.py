@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     #installed app
     'college_management_app',
+    'college_api',
     'rest_framework',
 ]
 

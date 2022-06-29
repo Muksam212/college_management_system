@@ -2,11 +2,6 @@ from dataclasses import fields
 from rest_framework import serializers
 from college_management_app.models import *
 
-class AdminSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Admin
-        fields = "__all__"
-
 
 class ParentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,4 +36,10 @@ class ClassSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
+        fields = "__all__"
+
+
+class TeacherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Teacher
         fields = "__all__"

@@ -33,8 +33,8 @@ class Parent(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
-    start_date = models.DateTimeField(auto_now_add=True)
-    end_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateField(auto_now_add=False)
+    end_date = models.DateField(auto_now_add=False)
     date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
