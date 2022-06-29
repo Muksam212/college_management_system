@@ -77,7 +77,7 @@ class Staff(models.Model):
         return "{}".format(self.name)
 
 
-class Classes(models.Model):
+class Class(models.Model):
     name = models.CharField(max_length=100)
     section = models.CharField(max_length=100)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="departments")
