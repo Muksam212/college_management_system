@@ -4,23 +4,12 @@ from django.contrib.auth.models import User
 
 GENDER = (
     ('MALE','MALE'),
-    ('FEMALE','FEMALE')
+    ('FEMALE','FEMALE'),
+    ('OTHER','OTHER'),
 )
-
-class Admin(models.Model):
-    name = models.OneToOneField(User, on_delete=models.CASCADE, related_name = "admins")
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = "Admin"
-        verbose_name_plural = "Admins"
-
-    def __str__(self):
-        return "{}".format(self.name)
 
 class Parent(models.Model):
     name = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to="parent/profile")
     ph_number = models.PositiveIntegerField("Phone Number")
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -45,13 +34,13 @@ class Course(models.Model):
         return "{}".format(self.name)
 
 
-
 class Department(models.Model):
     name = models.CharField(max_length=100)
-    admin = models.ForeignKey(Admin, on_delete=models.CASCADE, related_name="departments")
+    admin = models.OneToOneField(User, on_delete=models.CASCADE, related_name="departments")
     total_staff = models.PositiveIntegerField()
     total_student = models.PositiveIntegerField()
     date_created = models.DateTimeField(auto_now_add=True)
+
 
     class Meta:
         verbose_name = "Department"
@@ -64,7 +53,6 @@ class Department(models.Model):
     
 class Staff(models.Model):
     name = models.CharField(max_length=100)
-    admin = models.ForeignKey(Admin, on_delete=models.CASCADE, related_name = "staffs")
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name ='staffs')
     salary = models.PositiveIntegerField()
     date_created = models.DateTimeField(auto_now_add=True)
@@ -77,25 +65,11 @@ class Staff(models.Model):
         return "{}".format(self.name)
 
 
-class Class(models.Model):
-    name = models.CharField(max_length=100)
-    section = models.CharField(max_length=100)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="departments")
-    date_created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name_plural = "Classes"
-
-    def __str__(self):
-        return "{}".format(self.name)
-
-
 class Student(models.Model):
     name = models.CharField(max_length=100)
-    course = models.ManyToManyField(Course)
-    parent = models.ManyToManyField(Parent)
-    temporary_address = models.CharField(max_length=100)
-    permanent_address = models.CharField(max_length=100)
+    course = models.ManyToManyField(Course, related_name="students")
+    parent = models.ManyToManyField(Parent, related_name="students")
+    address = models.CharField(max_length=100)
     email = models.EmailField()
     age = models.PositiveIntegerField()
     gender = models.CharField(max_length=100, choices=GENDER)
@@ -122,3 +96,18 @@ class Teacher(models.Model):
 
     def __str__(self):
         return "{}".format(self.name)
+
+class Class(models.Model):
+    name = models.CharField(max_length=100)
+    student = models.ManyToManyField(Student)
+    teacher = models.ManyToManyField(Teacher)
+    section = models.CharField(max_length=100)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="departments")
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Classes"
+
+    def __str__(self):
+        return "{}".format(self.name)
+

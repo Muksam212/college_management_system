@@ -8,23 +8,21 @@ class ParentSerializer(serializers.ModelSerializer):
         model = Parent
         fields = "__all__"
 
-
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = "__all__"
-
 
 class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = "__all__"
 
-
 class StaffSerializer(serializers.ModelSerializer):
+    staffs = serializers.SlugRelatedField(queryset = Staff.objects.all(), slug_field = 'id')
     class Meta:
         model = Staff
-        fields = "__all__"
+        fields = ['name','staffs','salary']
 
 
 class ClassSerializer(serializers.ModelSerializer):
@@ -34,9 +32,12 @@ class ClassSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    #foreign key for nested serializers
+    students = serializers.SlugRelatedField(queryset=Course.objects.all(), slug_field = 'id')
+    students = serializers.SlugRelatedField(queryset=Parent.objects.all(), slug_field = 'id')
     class Meta:
         model = Student
-        fields = "__all__"
+        fields = ['name','students','students','address','email','age','gender']
 
 
 class TeacherSerializer(serializers.ModelSerializer):
