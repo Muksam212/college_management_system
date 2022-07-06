@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'college_management_app',
     'college_api',
     'rest_framework',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [

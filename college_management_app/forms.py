@@ -29,20 +29,7 @@ class RegisterForm(forms.Form):
         return cf_pwd
 
 
-class ParentForm(forms.ModelForm):
-    class Meta:
-        model = Parent
-        fields = "__all__"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['name'].widget.attrs.update({
-            'class':'form-control'
-        })
-        for field in self.fields:
-            self.fields[field].widget.attrs.update({
-                'class':'form-control'
-            })
-
-
+class LoginForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput())
+    password = forms.CharField(widget=forms.PasswordInput())
     

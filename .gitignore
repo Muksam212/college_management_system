@@ -2,7 +2,7 @@
 *.pot
 .vscode
 *.pyc
-venv/
+venv
 settings.py
 db.sqlite3
 migrations
