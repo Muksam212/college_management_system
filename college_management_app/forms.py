@@ -2,6 +2,7 @@ from college_management_app.models import *
 from django.contrib.auth.models import User
 from django import forms
 
+
 class RegisterForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput())
     email = forms.CharField(widget=forms.EmailInput())
@@ -33,3 +34,24 @@ class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput())
     password = forms.CharField(widget=forms.PasswordInput())
     
+
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['name','faculty','address','ph_number','photo','age']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({
+            'class':'form-control',
+            'placeholder':'Enter your Name'
+        })
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({
+                'class':'form-control',
+            })
+        self.fields['photo'].widget.attrs.update({
+            'class':'form-control',
+            'onchange':'loadFile(event)',
+        })

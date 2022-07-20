@@ -6,3 +6,4 @@ venv
 settings.py
 db.sqlite3
 migrations
+media

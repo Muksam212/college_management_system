@@ -1,0 +1,45 @@
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h4 class="title-header"> Add Student </h4>
+    </div>
+
+    <div class="modal-body">
+        {{ form.non_field_errors }}
+        {% for f in form %}
+            <div class="form-group" required>
+                <label> {{ f.label }} </label>
+                {{ f }}
+                <span> {{ f.errors|striptags }} </span>
+            </div>
+        {% endfor %}
+        <img id="output_image"/ style="width:100px;" "height:100px;"> 
+        <button type="submit" class="btn btn-primary"> Add Student </button>
+    </div>
+</form>
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            swal({
+                title:'Good Job',
+                text:'{{ message }}',
+                icon: 'success',
+            })
+        </script>
+    {% endfor %}
+{% endif %}
+
+{% endblock content %}
+{% block js %}
+<script>
+    $(document).ready(function(){
+        $('#id_faculty').select2();
+    })
+</script>
+
+{% endblock js %}
