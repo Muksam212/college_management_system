@@ -21,7 +21,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),   
     path('', include('college_management_app.urls')),
-    path('', include('college_api.urls'))
+    path('', include('college_api.urls')),
+    # path('auth/', include('social_django.urls', namespace='social')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

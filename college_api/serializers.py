@@ -5,7 +5,7 @@ class TeacherSerializer(serializers.ModelSerializer):
     #using foreign key 
     class Meta:
         model = Teacher
-        fields = ['id','name','address','email','ph_number','photo','age','faculty','gender','date_created']
+        exclude_at = ['deleted_at']
 
         
 class StudentSerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class StudentSerializer(serializers.ModelSerializer):
     teachers = TeacherSerializer(many=True, read_only=True)
     class Meta:
         model = Student
-        fields = ['id','name','faculty','address','email','ph_number','photo','age','gender','teachers','date_created']
+        exclude_at = ['deleted_at']
         depth = 1
 
 class ParentSerializer(serializers.ModelSerializer):

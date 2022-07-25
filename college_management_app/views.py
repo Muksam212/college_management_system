@@ -1,15 +1,22 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView, CreateView
+from django.views.generic import (TemplateView, FormView, CreateView, View, ListView, 
+                                UpdateView, DeleteView)
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, QueryDict
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
+
+from college_management_app.filters import StudentFilter
+from college_management_app.models import *
 
 from college_management_app.forms import RegisterForm, LoginForm, StudentForm
 
 #class based views
 
+#Login required mixins
 class LoginRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
@@ -66,7 +73,24 @@ class LoginPage(FormView):
         return super().form_valid(form)
 
 
+class LogoutPage(View):
+    def get(self, request):
+        logout(request)
+        return redirect('college_management_app:login-page')
+
+
 #Crud Student
+class StudentList(ListView):
+    template_name = 'student/list.html'
+    model = Student
+    context_object_name = 'student_list'
+    paginate_by = 3
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['student_filter'] = StudentFilter(self.request.GET, queryset=self.get_queryset())
+        return context
+
 class StudentCreate(LoginRequiredMixin,SuccessMessageMixin,CreateView):
     template_name = "student/add.html"
     form_class = StudentForm
@@ -85,3 +109,34 @@ class StudentCreate(LoginRequiredMixin,SuccessMessageMixin,CreateView):
 
     def get_initial(self):
         return {'name':'sdfasd'}
+
+
+class StudentEdit(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
+    template_name = 'student/edit.html'
+    form_class = StudentForm
+    success_url = reverse_lazy('college_management_app:student-list')
+    success_message = "Student Update Successful"
+
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('id')
+        return get_object_or_404(Student, id=id)
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % cleaned_data
+
+class StudentDelete(LoginRequiredMixin,SuccessMessageMixin,DeleteView):
+    template_name = 'student/delete.html'
+    model = Student
+    success_url = reverse_lazy('college_management_app:student-list')
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('id')
+        return get_object_or_404(Student, id=id)
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % cleaned_data

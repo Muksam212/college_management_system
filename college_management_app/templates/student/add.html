@@ -4,6 +4,13 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <form method="POST" action="" enctype="multipart/form-data">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-primary" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     {% csrf_token %}
     <div class="modal-header">
         <h4 class="title-header"> Add Student </h4>
@@ -22,24 +29,21 @@
         <button type="submit" class="btn btn-primary"> Add Student </button>
     </div>
 </form>
-{% if messages %}
-    {% for message in messages %}
-        <script>
-            swal({
-                title:'Good Job',
-                text:'{{ message }}',
-                icon: 'success',
-            })
-        </script>
-    {% endfor %}
-{% endif %}
-
 {% endblock content %}
-{% block js %}
+{% block scripts %}
 <script>
     $(document).ready(function(){
         $('#id_faculty').select2();
     })
+
+    var loadFile = function(event){
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('output_image');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    };
 </script>
 
-{% endblock js %}
+{% endblock scripts %}

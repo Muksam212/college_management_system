@@ -132,7 +132,6 @@ class Admin(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "Admin"
         verbose_name_plural = "Admins"
 
     def __str__(self):
