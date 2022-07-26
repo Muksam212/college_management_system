@@ -2,7 +2,7 @@
 <form method="POST" action="{% url 'college_management_app:student-delete' object.id %}">
     {% csrf_token %}
         <div class="modal-header">
-            <h4 class="modal-title">Delete Author</h4>
+            <h4 class="modal-title">Delete Student</h4>
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
@@ -14,4 +14,5 @@
         <input type="submit" class="btn btn-success" value="Delete">
     </div>
 </form>
+
 {% endblock content %}

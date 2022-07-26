@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import (TemplateView, FormView, CreateView, View, ListView, 
-                                UpdateView, DeleteView)
+                                UpdateView, DeleteView, DetailView)
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.models import User
@@ -11,7 +11,6 @@ from django.shortcuts import get_object_or_404
 
 from college_management_app.filters import StudentFilter
 from college_management_app.models import *
-
 from college_management_app.forms import RegisterForm, LoginForm, StudentForm
 
 #class based views
@@ -84,12 +83,16 @@ class StudentList(ListView):
     template_name = 'student/list.html'
     model = Student
     context_object_name = 'student_list'
-    paginate_by = 3
+    paginate_by = 2
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['student_filter'] = StudentFilter(self.request.GET, queryset=self.get_queryset())
-        return context
+    #search query
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = self.model.objects.all()
+        if query:
+            object_list = object_list.filter(name__icontains=query)
+        return object_list
+
 
 class StudentCreate(LoginRequiredMixin,SuccessMessageMixin,CreateView):
     template_name = "student/add.html"
@@ -101,15 +104,8 @@ class StudentCreate(LoginRequiredMixin,SuccessMessageMixin,CreateView):
         form.save()
         return super().form_valid(form)
 
-    def form_invalid(self, form):
-        return JsonResponse({'error':'Failed to Saved Form'})
-
-    def get_success_message(self, cleaned_data):
+    def get_success_message(self,cleaned_data):
         return self.success_message % cleaned_data
-
-    def get_initial(self):
-        return {'name':'sdfasd'}
-
 
 class StudentEdit(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
     template_name = 'student/edit.html'
@@ -132,7 +128,8 @@ class StudentEdit(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
 class StudentDelete(LoginRequiredMixin,SuccessMessageMixin,DeleteView):
     template_name = 'student/delete.html'
     model = Student
-    success_url = reverse_lazy('college_management_app:student-list')
+    success_url = reverse_lazy("college_management_app:student-list")
+    success_message = "Student information is deleted"
 
     def get_object(self, **kwargs):
         id = self.kwargs.get('id')
